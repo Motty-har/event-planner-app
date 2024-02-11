@@ -1,8 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom";
+import { useUserContext } from "./context";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from "./Home";
+import ParentForm from "./ParentForm";
+import Navbar from "./NavBar";
+
 
 function App() {
-  return <h1>Project Client</h1>;
+  return (
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/sign-up-log-in">
+          <ParentForm />
+        </Route>
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;

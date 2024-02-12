@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useFormik } from "formik";
-import { useUserContext } from "./context";
+import { useGlobalState } from "./context";
 
 function LogIn() {
-  const { logIn, setLogIn } = useUserContext();
-  const [error, setError] = useState(false)
+  const { logIn, setLogIn, setUser } = useGlobalState();
+  const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
 
   const formik = useFormik({
@@ -25,11 +26,12 @@ function LogIn() {
           if (response.ok) {
             return response.json();
           } else {
-            setError(true)
+            setError(true);
             throw new Error("Failed to log in");
           }
         })
         .then((user) => {
+          setUser(user);
           history.push('/');
         })
         .catch((error) => {
@@ -55,11 +57,17 @@ function LogIn() {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               onChange={formik.handleChange}
               value={formik.values.password}
             />
-            {error ? <p style={{ color: 'red', textAlign: 'center' }}>Username or Password is inccorect</p> : null}
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{ cursor: "pointer", marginLeft: "5px", color: "#007BFF" }}
+            >
+              {showPassword ? "Hide" : "Show"} Password
+            </span>
+            {error ? <p style={{ color: 'red', textAlign: 'center' }}>Username or Password is incorrect</p> : null}
             <div className="submit-button-wrapper">
               <button className="submit-button" type="submit">Submit</button>
             </div><br />

@@ -1,17 +1,20 @@
 import React, { createContext, useContext, useState } from "react";
 
-const UserContext = createContext();
+const GlobalStateContext = createContext();
 
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(false);
-  const [logIn, setLogIn ] = useState(false)
+export const GlobalStateProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [logIn, setLogIn] = useState(false);
+
+  const globalState = { user, setUser, logIn, setLogIn };
+
   return (
-    <UserContext.Provider value={{ user, setUser, logIn, setLogIn }}>
+    <GlobalStateContext.Provider value={globalState}>
       {children}
-    </UserContext.Provider>
+    </GlobalStateContext.Provider>
   );
 };
 
-export const useUserContext = () => {
-  return useContext(UserContext);
+export const useGlobalState = () => {
+  return useContext(GlobalStateContext);
 };

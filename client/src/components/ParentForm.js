@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SignUp from "./SignUp";
 import LogIn from "./LogIn";
-import { useUserContext } from "./context";
+import { useGlobalState } from "./context";
 
 function ParentForm() {
-  const { logIn } = useUserContext();
+  const { logIn, setLogIn} = useGlobalState();
+  
+  useEffect(() => {
+    setLogIn(false);
+  }, []);
+
   return logIn ? (
     <LogIn />
   ) : (

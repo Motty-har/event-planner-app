@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
-import { useUserContext } from "./context";
+import { useGlobalState } from "./context";
 
-function SignUp({ setUser }) {
-  const { logIn, setLogIn } = useUserContext();
+function SignUp() {
+  const { logIn, setLogIn, setUser } = useGlobalState();
   const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
 
   const formSchema = yup.object().shape({
@@ -34,16 +35,16 @@ function SignUp({ setUser }) {
         },
         body: JSON.stringify(values, null, 2),
       })
-        .then((r) => {
-          if (r.ok) {
-            return r.json();
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
           } else {
             setError(true);
             throw new Error("Failed to sign up");
           }
         })
         .then((user) => {
-          setUser(user);
+          setUser(user)
           history.push("/");
         })
         .catch((error) => {
@@ -51,6 +52,10 @@ function SignUp({ setUser }) {
         });
     },
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="parent-container">
@@ -71,8 +76,7 @@ function SignUp({ setUser }) {
                 {formik.errors.firstName}
               </p>
             )}
-            <br />
-            <br />
+            {formik.errors.firstName ? null : <br />}
             <label htmlFor="lastName">Last Name</label>
             <input
               id="lastName"
@@ -86,8 +90,7 @@ function SignUp({ setUser }) {
                 {formik.errors.lastName}
               </p>
             )}
-            <br />
-            <br />
+            {formik.errors.lastName ? null : <br />}
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -102,8 +105,7 @@ function SignUp({ setUser }) {
                 {formik.errors.email}
               </p>
             )}
-            <br />
-            <br />
+            {formik.errors.email ? null : <br />}
             <label htmlFor="username">Username</label>
             <input
               id="username"
@@ -117,17 +119,22 @@ function SignUp({ setUser }) {
                 {formik.errors.username}
               </p>
             )}
-            <br />
-            <br />
+            {formik.errors.username ? null : <br />}
             <label htmlFor="password">Password</label>
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               className={formik.errors.password ? "error-input" : ""}
               onChange={formik.handleChange}
               value={formik.values.password}
             />
+            <span
+              onClick={togglePasswordVisibility}
+              style={{ cursor: "pointer", marginLeft: "5px", color: "#007BFF" }}
+            >
+              {showPassword ? "Hide" : "Show"} Password
+            </span>
             {formik.errors.password && (
               <p style={{ color: "red", textAlign: "center" }}>
                 {formik.errors.password}

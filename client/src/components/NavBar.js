@@ -1,9 +1,17 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { useUserContext } from "./context";
+import { NavLink, useHistory } from "react-router-dom";
+import { useGlobalState } from "./context";
 
 function Navbar() {
-  const { user } = useUserContext();
+  const { user, setUser } = useGlobalState();
+  const history = useHistory();
+
+  const handleLogout = () => {
+    fetch('/logout',{
+      method: "DELETE"
+    })
+    setUser(false)
+  };
 
   return (
     <div>
@@ -24,7 +32,7 @@ function Navbar() {
         </div>
         <div className="right-links">
           {user ? (
-            <NavLink to="/logout" className="nav-link" activeClassName="active-link">
+            <NavLink to="/" className="nav-link" activeClassName="active-link" onClick={handleLogout}>
               Logout
             </NavLink>
           ) : (

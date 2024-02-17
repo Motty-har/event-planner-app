@@ -33,18 +33,17 @@ function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values, null, 2),
+        body: JSON.stringify(values),
       })
         .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
+          if (!response.ok) {
             setError(true);
             throw new Error("Failed to sign up");
           }
+          return response.json();
         })
         .then((user) => {
-          setUser(user)
+          setUser(user);
           history.push("/");
         })
         .catch((error) => {

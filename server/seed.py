@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from faker import Faker
 
 from app import app
-from models import Event, User, Invitation, Task, db
+from models import *
 from events import events 
 
 if __name__ == '__main__':

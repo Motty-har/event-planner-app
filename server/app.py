@@ -1,8 +1,8 @@
 from flask import Flask, request, session
 from flask_restful import Resource, Api
 from config import app, db, api
-from models import User  
-
+from models import *  
+import ipdb
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id')
@@ -53,6 +53,7 @@ class Logout(Resource):
     def delete(self):
         session['user_id'] = None
         return False, 204
+
 
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')

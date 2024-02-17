@@ -5,9 +5,10 @@ import Home from "./Home";
 import ParentForm from "./ParentForm";
 import Navbar from "./NavBar";
 import LoadingPage from "./LoadingPage";
+import Events from "./Events"
 
 function App() {
-  const { user, setUser } = useGlobalState();
+  const { user, setUser, events, setEvents } = useGlobalState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +23,12 @@ function App() {
       })
       .then((r) => {
         setUser(r);
+        setEvents(r.invitations)
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
+        setLoading(false)
         setLoading(false);
       });
   }, []);
@@ -43,6 +46,9 @@ function App() {
         </Route>
         <Route path="/sign-up-log-in">
           <ParentForm />
+        </Route>
+        <Route path="/events">
+            <Events />
         </Route>
       </Switch>
     </Router>

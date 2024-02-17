@@ -328,3 +328,87 @@ body {
     p {
       margin: 5px 0;
     }
+
+/*Event Cards*/
+.event-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+/* Set a maximum width for the container and center it on larger screens */
+@media (min-width: 768px) {
+  .event-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+.event-card {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  margin: 16px;
+  box-sizing: border-box;
+  border: 1px solid whitesmoke;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: transparent; /* Set background color to transparent */
+}
+
+.event-card-title {
+  font-size: 1.5em; /* Larger font size */
+  margin-bottom: 8px;
+  text-align: center;
+  -webkit-text-fill-color: whitesmoke; /* Set text fill color to transparent */
+  -webkit-text-stroke: 0.6px black;
+}
+
+.event-card-description {
+  color: whitesmoke; /* Default text color */
+  font-size: 1.2em; /* Slightly larger font size */
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.event-card-details {
+  display: flex;
+  flex-direction: column; /* Align details vertically */
+  color: whitesmoke
+}
+
+.event-card-details p {
+  margin: 8px 0;
+}
+
+.event-card-status {
+  margin-top: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: whitesmoke;
+  text-align: center;
+}
+
+.event-card:hover {
+  transform: scale(1.05);
+}
+
+.no-events-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #f8f5e1; /* Background color */
+}
+
+.no-events-message {
+  font-size: 2em;
+  color: whitesmoke; /* Text color */
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ccc; /* Border */
+  border-radius: 10px; /* Border radius */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+}

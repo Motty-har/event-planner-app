@@ -330,6 +330,43 @@ body {
     }
 
 /*Event Cards*/
+.no-events-container {
+  display: flex;
+  flex-direction: column; /* Display children in a column layout */
+  justify-content: center;
+  align-items: center;
+  height: 50vh; 
+}
+
+.no-events-message {
+  font-size: 2em;
+  color: whitesmoke; /* Text color */
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ccc; /* Border */
+  border-radius: 10px; /* Border radius */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+
+}
+
+.create-event-button {
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 10px; /* Add margin-bottom to move the button to a new line */
+  padding: 10px 20px;
+  background-color: rgb(3, 173, 173);
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2em;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.create-event-button:hover {
+  background-color: #f8f5e1;
+  color: rgb(3, 173, 173);
+}
+
 .event-container {
   display: flex;
   flex-wrap: wrap;
@@ -337,7 +374,7 @@ body {
   padding: 20px;
 }
 
-/* Set a maximum width for the container and center it on larger screens */
+
 @media (min-width: 768px) {
   .event-container {
     max-width: 800px;
@@ -376,7 +413,7 @@ body {
 .event-card-details {
   display: flex;
   flex-direction: column; /* Align details vertically */
-  color: whitesmoke
+  color: whitesmoke;
 }
 
 .event-card-details p {
@@ -395,20 +432,142 @@ body {
   transform: scale(1.05);
 }
 
-.no-events-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full viewport height */
-  background-color: #f8f5e1; /* Background color */
+/* CreateEventForm*/
+.create-event-header{
+  color: black;
+  text-align: center;
 }
 
-.no-events-message {
-  font-size: 2em;
-  color: whitesmoke; /* Text color */
-  text-align: center;
+.event-form-card {
+  max-width: 400px;
+  margin: 40px auto; /* Adjust the margin to add space from the top */
   padding: 20px;
-  border: 1px solid #ccc; /* Border */
-  border-radius: 10px; /* Border radius */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+  background-color: #f8f5e1;
+  border: 1px solid whitesmoke;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+}
+
+.create-event-form {
+  width: 100%; /* Take full width of the container */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+}
+
+.form-group {
+  width: 100%; /* Take full width of the container */
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+  color: black;
+  align-self: flex-start; /* Align the label to the start (left) */
+}
+
+textarea {
+  width: 100%; /* Take full width of the container */
+  height: 100px; /* Fixed height for the description box */
+  box-sizing: border-box; /* Include padding and border in the box size */
+  resize: none;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.error {
+  color: red;
+  margin-top: 4px;
+}
+
+.submit-button {
+  background-color: rgb(3, 173, 173);
+  color: #fff;
+  padding: 12px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #f8f5e1;
+  color: rgb(3, 173, 173);
+}
+
+.invitations-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f8f5e1;
+  border: 1px solid whitesmoke;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.invitations-header {
+  color: black;
+  text-align: center;
+}
+
+.user-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.user-card {
+  display: block;
+  align-items: center;
+  margin: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 80px;
+  width: 200px;
+}
+
+.user-card.selected {
+  background-color: rgb(3, 173, 173);
+  color: #fff;
+}
+
+.user-label {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: auto;
+}
+
+.submit-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.submit-button {
+  background-color: rgb(3, 173, 173);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.warning-message{
+  color: black
 }

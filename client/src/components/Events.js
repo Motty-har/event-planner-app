@@ -1,18 +1,30 @@
+// Event.js
+
 import React from "react";
 import EventCard from "./EventCard";
 import { useGlobalState } from "./context";
-import LoadingPage from "./LoadingPage";
+import { Link } from "react-router-dom";
 
 function Event() {
   const { events, user } = useGlobalState();
 
-  if (events.length === 0) {
+  if (!user || events.length === 0) {
     return (
-      <div className="event-container no-events">
+      <div className="no-events-container">
         <div className="no-events-message">No Events</div>
+        {user && (
+          <div>
+            <p>
+              <Link to="/create-event" className="create-event-button">
+                Create Event
+              </Link>
+            </p>
+          </div>
+        )}
       </div>
     );
   }
+  
 
   return (
     <div className="event-container">

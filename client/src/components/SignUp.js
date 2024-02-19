@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useGlobalState } from "./context";
 
 function SignUp() {
-  const { logIn, setLogIn, setUser } = useGlobalState();
+  const { logIn, setLogIn, setUser, setEvents } = useGlobalState();
   const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
@@ -28,6 +28,7 @@ function SignUp() {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
+      console.log(values)
       fetch("signup", {
         method: "POST",
         headers: {
@@ -44,6 +45,7 @@ function SignUp() {
         })
         .then((user) => {
           setUser(user);
+          setEvents(user.invitations)
           history.push("/");
         })
         .catch((error) => {

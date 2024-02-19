@@ -31,17 +31,19 @@ if __name__ == '__main__':
         users = []
 
         for i in range(20):
-            first_name = fake.first_name()
-            last_name = fake.last_name()
+            firstname = fake.first_name()
+            lastname = fake.last_name()
             random_number_1 = randint(10, 99)
 
-            username = f"{first_name.lower()}{last_name.lower()}{random_number_1}"
-            name = f"{first_name} {last_name}"
+            username = f"{firstname.lower()}{lastname.lower()}{random_number_1}"
+            first_name = firstname
+            last_name = lastname
             email = f"{username}@mail.com"
 
             user = User(
                 username=username,
-                name=name,
+                first_name = first_name,
+                last_name = last_name,
                 email=email,
             )
             user.password_hash = user.username + 'password'

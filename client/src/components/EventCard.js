@@ -1,3 +1,5 @@
+// EventCard.js
+
 import React from "react";
 
 function EventCard({ event, status }) {
@@ -9,7 +11,7 @@ function EventCard({ event, status }) {
       <hr></hr>
       
       <div className="event-card-details">
-        <p >
+        <p>
           <strong>Date:</strong> {date}
         </p>
         <p>
@@ -19,12 +21,12 @@ function EventCard({ event, status }) {
           <strong>Location:</strong> {location}
         </p>
       </div>
-        <hr></hr>
+      <hr></hr>
       <p className="event-card-description">{description}</p>
       <hr></hr>
       <p className="event-card-status">
         <strong>Status:</strong> {status}
-        </p>
+      </p>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useGlobalState } from "./context";
 
 function LogIn() {
-  const { logIn, setLogIn, setUser } = useGlobalState();
+  const { logIn, setLogIn, setUser, setEvents } = useGlobalState();
   const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
@@ -32,6 +32,7 @@ function LogIn() {
         })
         .then((user) => {
           setUser(user);
+          setEvents(user.invitations);
           history.push('/');
         })
         .catch((error) => {

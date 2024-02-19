@@ -6,6 +6,8 @@ import ParentForm from "./ParentForm";
 import Navbar from "./NavBar";
 import LoadingPage from "./LoadingPage";
 import Events from "./Events"
+import CreateEventForm from "./CreateEventForm";
+import Invitations from "./Invitations";
 
 function App() {
   const { user, setUser, events, setEvents } = useGlobalState();
@@ -29,7 +31,6 @@ function App() {
       .catch((error) => {
         console.error("Error fetching user data:", error);
         setLoading(false)
-        setLoading(false);
       });
   }, []);
 
@@ -49,6 +50,12 @@ function App() {
         </Route>
         <Route path="/events">
             <Events />
+        </Route>
+        <Route path='/create-event'>
+          <CreateEventForm />
+        </Route>
+        <Route path='/invitations/:event_id'>
+          <Invitations />
         </Route>
       </Switch>
     </Router>

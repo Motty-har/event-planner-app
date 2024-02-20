@@ -102,6 +102,26 @@ class Invitations(Resource):
         db.session.commit()
 
         return { 'Success': True }, 200
+
+class CreateTasks(Resource):
+    def post(self, event_id):
+        tasks = request.get_json()
+
+        for task_data in tasks:
+            assigned_to_id = task_data['assignedTo']['id']
+            new_task = Task(
+                description=task_data['description'],
+                due_date=datetime.strptime(task_data['dueDate'], '%Y-%m-%d').date(),
+                event_id=event_id,
+                assigned_to=assigned_to_id
+            )
+
+            db.session.add(new_task)
+
+        db.session.commit()
+
+        return {'success': True}, 200
+
         
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
@@ -110,6 +130,7 @@ api.add_resource(Logout, '/logout')
 api.add_resource(CreateEvent, '/create-event')
 api.add_resource(Users, '/users')
 api.add_resource(Invitations, '/invitations')
+api.add_resource(CreateTasks, '/create_tasks/<int:event_id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

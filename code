@@ -1,0 +1,125 @@
+# # users = []
+
+# #         for i in range(20):
+# #             first_name = fake.first_name()
+# #             last_name = fake.last_name()
+# #             random_number_1 = randint(10, 99)
+
+# #             username = f"{first_name.lower()}{last_name.lower()}{random_number_1}"
+# #             name = f"{first_name} {last_name}"
+# #             email = f"{username}@mail.com"
+
+# #             user = User(
+# #                 username=username,
+# #                 name=name,
+# #                 email=email,
+# #             )
+# #             user.password_hash = user.username + 'password'
+
+# #             users.append(user)
+
+# #         for user in users:
+# #             db.session.add(user)
+
+# #         db.session.commit()
+
+# #         invitations = []
+
+# #         for event in Event.query.all():
+# #             for user in User.query.all():
+# #                 status = choice(['accepted', 'declined', 'pending'])
+# #                 invitation = Invitation(
+# #                     event_id=event.id,
+# #                     user_id=user.id,
+# #                     status=status
+# #                 )
+# #                 invitations.append(invitation)
+
+# #         db.session.add_all(invitations)
+# #         db.session.commit()
+
+# #         tasks = []
+
+# #         for event in Event.query.all():
+# #             for user in User.query.all():
+# #                 description = f"Task for {event.title}"
+# #                 due_date = event.date - timedelta(days=randint(1, 30))
+# #                 completed = choice([True, False])
+# #                 task = Task(
+# #                     description=description,
+# #                     due_date=due_date,
+# #                     completed=completed,
+# #                     event_id=event.id,
+# #                     assigned_to=user.id
+# #                 )
+# #                 tasks.append(task)
+
+# #         db.session.add_all(tasks)
+# #         db.session.commit()
+
+
+# class User(db.Model, SerializerMixin):
+#     __tablename__ = 'users'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(50), unique=True, nullable=False)
+#     name = db.Column(db.String(50), nullable=False)
+#     email = db.Column(db.String(120), unique=True, nullable=False)
+#     _password_hash = db.Column(db.String(128), nullable=False)
+
+#     @hybrid_property
+#     def password_hash(self):
+#         raise AttributeError('Password hashes may not be viewed.')
+
+#     @password_hash.setter
+#     def password_hash(self, password):
+#         password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
+#         self._password_hash = password_hash.decode('utf-8')
+
+#     def authenticate(self, password):
+#         return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
+
+#     tasks = db.relationship('Task', back_populates='assignee', cascade='all, delete-orphan')
+#     invitations = db.relationship('Invitation', back_populates='user', cascade='all, delete-orphan')
+
+#     serialize_rules = ('-tasks.assignee', '-invitations.user')
+
+#     def __repr__(self):
+#         return f'<User id={self.id} username={self.username} email={self.email}>'
+
+
+# class Invitation(db.Model, SerializerMixin):
+#     __tablename__ = 'invitations'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+#     status = db.Column(db.String(20), nullable=False)  
+
+#     event = db.relationship('Event', back_populates='invitations')
+#     user = db.relationship('User', back_populates='invitations')
+
+#     serialize_rules = ('-event.invitations', '-user.invitations')
+
+#     def __repr__(self):
+#         return f'<Invitation id={self.id} event_id={self.event_id} user_id={self.user_id} status={self.status}>'
+
+
+# class Task(db.Model, SerializerMixin):
+#     __tablename__ = 'tasks'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     description = db.Column(db.String(255), nullable=False)
+#     due_date = db.Column(db.Date, nullable=False)
+#     completed = db.Column(db.Boolean, default=False)
+#     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+#     assigned_to = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+
+#     event = db.relationship('Event', back_populates='tasks')
+#     assignee = db.relationship('User', back_populates='tasks')
+
+#     serialize_rules = ('-event.tasks',)
+
+#     def __repr__(self):
+#         return f'<Task id={self.id} description={self.description} due_date={self.due_date} ' \
+#             #    f'completed={self.completed} event_id={self.event_id} assigned_to={self.assigned_to}>'

@@ -1,58 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useGlobalState } from "./context";
+import LoadingPage from './LoadingPage';
 
 const Invitations = () => {
   const [users, setUsers] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const {user} = useGlobalState()
+  const [loading, setLoading] = useState(true); // New loading state
+  const { user, selectedUsers, setSelectedUsers } = useGlobalState();
   const { event_id } = useParams();
-    console.log(event_id)
-  useEffect(() => {
-    fetch('/users') 
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error fetching users:', error));
-  }, []);  
+  const history = useHistory();
 
-  const handleUserToggle = (userId) => {
+  useEffect(() => {
+    fetch('/users')
+      .then(response => response.json())
+      .then(data => {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+        setLoading(false); 
+      });
+  }, []);
+
+  if (loading) {
+    return <LoadingPage />;
+  }
+
+  const handleUserToggle = (selectedUser) => {
     setSelectedUsers(prevSelectedUsers => {
-      if (prevSelectedUsers.includes(userId)) {
-        return prevSelectedUsers.filter(id => id !== userId);
+      if (prevSelectedUsers.find(user => user.id === selectedUser.id)) {
+        return prevSelectedUsers.filter(user => user.id !== selectedUser.id);
       } else {
-        return [...prevSelectedUsers, userId];
+        return [...prevSelectedUsers, selectedUser];
       }
     });
   };
 
   const handleSubmit = () => {
-    const data = {
-        user_id: user.id,
-        selected_users: selectedUsers,
-        event_id: parseInt(event_id, 10)
-      };
     
-      fetch('/invitations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+    const selectedUsersIds = selectedUsers.map(user => user.id);
+    const data = {
+      user_id: user.id,
+      selected_users: selectedUsersIds,
+      event_id: parseInt(event_id, 10)
+    };
+
+    fetch('/invitations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(result => {
-          console.log('Invitations sent successfully:', result);
-          // Add your logic for handling the successful response
-        })
-        .catch(error => {
-          console.error('Error sending invitations:', error);
-          // Add your logic for handling errors
-        });
+      .then(result => {
+        console.log('Invitations sent successfully:', result);
+        history.push(`/create-tasks/${event_id}`);
+      })
+      .catch(error => {
+        console.error('Error sending invitations:', error);
+      });
   };
 
   return (
@@ -62,8 +75,8 @@ const Invitations = () => {
         {users.map(user => (
           <div
             key={user.id}
-            className={`user-card ${selectedUsers.includes(user.id) ? 'selected' : ''}`}
-            onClick={() => handleUserToggle(user.id)}
+            className={`user-card ${selectedUsers.find(selectedUser => selectedUser.id === user.id) ? 'selected' : ''}`}
+            onClick={() => handleUserToggle(user)}
           >
             <label className="user-label" htmlFor={`user-${user.id}`}>
               {user.first_name} {user.last_name}

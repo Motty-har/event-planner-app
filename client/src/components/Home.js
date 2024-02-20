@@ -1,7 +1,6 @@
 // Home.js
-import React, { useContext, useEffect } from 'react';
-import Navbar from './NavBar';
-import { useUserContext } from "./context";
+import React from 'react';
+
 
 const Home = () => {
   return (

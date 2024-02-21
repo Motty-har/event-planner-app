@@ -132,7 +132,21 @@ class CreateTasks(Resource):
 
         return {'success': True}, 200
 
-        
+class TaskStatus(Resource):
+    def patch(self, task_id):
+        task = Task.query.filter_by(id=task_id).first()
+
+        if task:
+            task.completed = not task.completed
+            db.session.commit()  
+
+            task_dict = task.to_dict()
+            return task_dict, 200
+        else:
+            return {"error": "Task not found"}, 404
+
+
+
 api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Login, '/login')
@@ -142,6 +156,7 @@ api.add_resource(Users, '/users')
 api.add_resource(GetEvent, '/get_event/<int:event_id>')
 api.add_resource(Invitations, '/invitations')
 api.add_resource(CreateTasks, '/create_tasks/<int:event_id>')
+api.add_resource(TaskStatus, '/task_status/<int:task_id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -275,7 +275,7 @@ body {
     border-radius: 10px;
     text-align: center;
   }
-
+  
   .submit-button:hover {
     background-color: #f8f5e1;
   }
@@ -624,9 +624,9 @@ select {
 /*event*/
 .centered-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 55vh;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
 }
 
 .single-event-card {
@@ -641,6 +641,7 @@ select {
   padding: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: transparent;
+  
 }
 
 .single-event-card-title {

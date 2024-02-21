@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
-import TaskCard from "./TaskCard";
+import { useGlobalState } from "./context";
+
 
 
 function Event() {
   const { event_id } = useParams();
+  const { user } = useGlobalState()
   const [event, setEvent] = useState();
   const [tasks, setTasks] = useState();
   const [invites, setInvites] = useState()
   const [isLoading, setIsLoading] = useState(true);
-  console.log(tasks)
+
   useEffect(() => {
     fetch(`/get_event/${event_id}`)
       .then((resp) => resp.json())
@@ -25,7 +27,34 @@ function Event() {
         setIsLoading(false);
       });
   }, [event_id]);
-
+  
+  function handleCompleted(taskId) {
+    fetch(`/task_status/${taskId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify()
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to mark task as completed');
+      }
+      setTasks(prevTasks => prevTasks.map(task => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            completed: !task.completed 
+          };
+        }
+        return task;
+      }));
+    })
+    .catch(error => {
+      console.error('Error marking task as completed:', error);
+    });
+  }
+  
   return (
     <div>
     <div className="centered-container">
@@ -50,36 +79,27 @@ function Event() {
           </div>
         </div>
       )}
-    </div><hr></hr>
+    </div><br></br>
     <div>
-    <h1 className="invite-header">Invites</h1>
-    {invites && invites.map((invite) => {
-  return (
-    <div key={invite.id} className="invite-card">
-      <h3>
-        {invite.user.first_name} {invite.user.last_name}
-      </h3>
-      <p>
-        <strong>Email:</strong> {invite.user.email}
-      </p>
-      <p>
-        <strong>Status:</strong>{" "}
-        {invite.status.charAt(0).toUpperCase() + invite.status.slice(1)}
-      </p>
     </div>
-  );
-})}
-    </div><hr></hr>
+    <h1 className="invite-header">Tasks:</h1>
+    
     {tasks && tasks.map(task => {
-       return (
-        <div className="invite-card">
-          <p><strong>Description:</strong> {task.description}</p><hr></hr><br></br>
-          <p><strong>Due Date:</strong> {task.due_date}</p><br></br>
-          <p><strong>Assigned To:</strong> {task.assigned_to}</p>
-          <p><strong>Completed:</strong> {!task.completed}</p>
+    return (
+        <div className="invite-card" key={task.id}>
+            <p><strong>Description:</strong> {task.description}</p>
+            <hr />
+            <br />
+            <p><strong>Due Date:</strong> {task.due_date}</p>
+            <br />
+            <p><strong>Assigned To:</strong> {task.assigned_to}</p>
+            <p><strong>Completed:</strong> {task.completed ? "Yes" : "No"} {task.assigned_to === user.id && (
+                <button onClick={() => handleCompleted(task.id)}>{task.completed ? "Mark as Completed" : "↩"}</button>
+            )}</p>
         </div>
-      );
-    })}
+    );
+})}
+
     </div>
   );
 }

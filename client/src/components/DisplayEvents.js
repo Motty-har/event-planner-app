@@ -1,11 +1,9 @@
-// Event.js
-
 import React from "react";
 import EventCard from "./EventCard";
 import { useGlobalState } from "./context";
 import { Link } from "react-router-dom";
 
-function Event() {
+function DisplayEvents() {
   const { events, user } = useGlobalState();
 
   if (!user || events.length === 0) {
@@ -35,4 +33,4 @@ function Event() {
   );
 }
 
-export default Event;
+export default DisplayEvents;

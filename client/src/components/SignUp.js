@@ -151,7 +151,7 @@ function SignUp() {
             </div>
             <br />
             <div className="btn-wrapper">
-              <p className="message">Don't have an account yet?</p>
+              <p className="message">Have an account already?</p>
               <button
                 className="signup-btn"
                 type="click"

@@ -5,10 +5,11 @@ import Home from "./Home";
 import ParentForm from "./ParentForm";
 import Navbar from "./NavBar";
 import LoadingPage from "./LoadingPage";
-import Events from "./Events"
+import DisplayEvents from "./DisplayEvents"
 import CreateEventForm from "./CreateEventForm";
 import Invitations from "./Invitations";
 import CreateTasks from "./CreateTasks";
+import Event from "./Event";
 
 function App() {
   const { user, setUser, events, setEvents } = useGlobalState();
@@ -50,7 +51,7 @@ function App() {
           <ParentForm />
         </Route>
         <Route path="/events">
-            <Events />
+            <DisplayEvents />
         </Route>
         <Route path='/create-event'>
           <CreateEventForm />
@@ -60,6 +61,9 @@ function App() {
         </Route>
         <Route path='/create-tasks/:event_id'>
           <CreateTasks />
+        </Route>
+        <Route path='/event/:event_id'>
+          <Event />
         </Route>
       </Switch>
     </Router>

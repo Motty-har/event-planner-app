@@ -1,8 +1,12 @@
-// Home.js
 import React from 'react';
+import { useHistory } from "react-router-dom";
+import { useGlobalState } from './context';
+
 
 
 const Home = () => {
+  const { user } = useGlobalState()
+  const history = useHistory()
   return (
     <div className="home-container">
       <section className="hero">
@@ -31,10 +35,15 @@ const Home = () => {
         </div>
       </section>
 
+      {user ? (
       <section className="cta" style={{ marginBottom: '40px' }}>
-        <button className="cta-button">Create Your First Event</button>
+        <button className="cta-button" onClick={() => history.push('/create-event')}>Create Your First Event</button>
       </section>
-
+    ) : (
+      <section className="cta" style={{ marginBottom: '40px' }}>
+        <button className="cta-button" onClick={() => history.push('/sign-up-log-in')}>Sign Up / Log In</button>
+      </section>
+    )}
       
       <div className="divider"></div>
 

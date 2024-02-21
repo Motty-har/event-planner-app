@@ -1,15 +1,16 @@
-// EventCard.js
-
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 function EventCard({ event, status }) {
   const { title, description, date, time, location } = event;
-
+  const history = useHistory()
+  function handleClick(){
+    history.push(`/event/${event.id}`)
+  }
   return (
-    <div className="event-card">
-      <h2 className="event-card-title">{title}</h2>
+    <div className="event-card" onClick={handleClick}>
+      <h2 className="event-card-title" >{title}</h2>
       <hr></hr>
-      
       <div className="event-card-details">
         <p>
           <strong>Date:</strong> {date}

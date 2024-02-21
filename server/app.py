@@ -85,6 +85,16 @@ class Users(Resource):
 
         return [user.to_dict() for user in users], 200
 
+class GetEvent(Resource):
+    def get(self, event_id):
+        
+        event = Event.query.filter_by(id=event_id).first()
+        
+        tasks = Task.query.filter_by(event_id=event_id).all()
+        tasks_ser = [task.to_dict() for task in tasks]
+        
+        return {'event': event.to_dict(), 'tasks': tasks_ser}, 200
+    
 class Invitations(Resource):
     def post(self):
         data = request.get_json()
@@ -129,6 +139,7 @@ api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(CreateEvent, '/create-event')
 api.add_resource(Users, '/users')
+api.add_resource(GetEvent, '/get_event/<int:event_id>')
 api.add_resource(Invitations, '/invitations')
 api.add_resource(CreateTasks, '/create_tasks/<int:event_id>')
 

@@ -21,7 +21,8 @@ if __name__ == '__main__':
                 description=event_data['description'],
                 date=datetime.strptime(event_data['date'], "%Y-%m-%d").date(),
                 time=datetime.strptime(event_data['time'], "%H:%M").time(),
-                location=event_data['location']
+                location=event_data['location'],
+                host_id=1
             )
 
             db.session.add(new_event)

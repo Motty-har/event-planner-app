@@ -7,7 +7,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
 
-    serialize_rules = ('-invitations.event',)
+    serialize_rules = ('-invitations.event', '-host.hosted_events', '-tasks.event')
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -16,6 +16,10 @@ class Event(db.Model, SerializerMixin):
     time = db.Column(db.Time, nullable=False)
     location = db.Column(db.String(200), nullable=False)
 
+    host_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    host = db.relationship('User', back_populates='hosted_events')
+
+    tasks = db.relationship('Task', back_populates='event', cascade='all, delete-orphan')
     invitations = db.relationship('Invitation', back_populates='event')
 
     def __repr__(self):
@@ -24,7 +28,7 @@ class Event(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    serialize_rules = ('-invitations.user',)
+    serialize_rules = ('-invitations.user', '-hosted_events.host')
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -34,6 +38,9 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String(128), nullable=False)
 
     invitations = db.relationship('Invitation', back_populates='user')
+
+    hosted_events = db.relationship('Event', back_populates='host', cascade='all, delete-orphan')
+    tasks = db.relationship('Task', back_populates='user')
 
     @hybrid_property
     def password_hash(self):
@@ -65,9 +72,11 @@ class Invitation(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Invitation id={self.id} event_id={self.event_id} user_id={self.user_id} status={self.status}>'
-    
+
 class Task(db.Model, SerializerMixin):
     __tablename__ = 'tasks'
+
+    serialize_rules = ('-event.tasks', '-user.tasks')
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(255), nullable=False)
@@ -75,6 +84,9 @@ class Task(db.Model, SerializerMixin):
     completed = db.Column(db.Boolean, default=False)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
     assigned_to = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+
+    event = db.relationship('Event', back_populates='tasks')
+    user = db.relationship('User', back_populates='tasks')
 
     def __repr__(self):
         return f'<Task id={self.id} description={self.description} due_date={self.due_date} ' \

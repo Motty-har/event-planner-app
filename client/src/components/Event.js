@@ -94,7 +94,7 @@ function Event() {
             <br />
             <p><strong>Assigned To:</strong> {task.assigned_to}</p>
             <p><strong>Completed:</strong> {task.completed ? "Yes" : "No"} {task.assigned_to === user.id && (
-                <button onClick={() => handleCompleted(task.id)}>{task.completed ? "Mark as Completed" : "↩"}</button>
+                <button onClick={() => handleCompleted(task.id)}>{!task.completed ? "Mark as Completed" : "↩"}</button>
             )}</p>
         </div>
     );

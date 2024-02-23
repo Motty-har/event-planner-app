@@ -23,7 +23,7 @@ function DisplayEvents() {
     );
   }
   
-
+  console.log(user)
   return (
     <div className="event-container">
       {events.map((event, index) => (

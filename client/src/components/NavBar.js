@@ -22,7 +22,10 @@ function Navbar() {
           </NavLink>
           {user && (
             <>
-              <NavLink to="/events" className="nav-link" activeClassName="active-link">
+              <NavLink to="/upcoming-events" className="nav-link" activeClassName="active-link">
+                Upcoming Events
+              </NavLink>
+              <NavLink to="/my-events" className="nav-link" activeClassName="active-link">
                 My Events
               </NavLink>
               <NavLink to="/create-event" className="nav-link" activeClassName="active-link">

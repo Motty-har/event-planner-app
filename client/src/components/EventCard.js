@@ -5,7 +5,7 @@ function EventCard({ event, status }) {
   const { title, description, date, time, location } = event;
   const history = useHistory()
   function handleClick(){
-    history.push(`/event/${event.id}`)
+    history.push(`/upcoming-event/${event.id}`)
   }
   return (
     <div className="event-card" onClick={handleClick}>

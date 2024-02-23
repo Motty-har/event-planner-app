@@ -12,7 +12,7 @@ import CreateTasks from "./CreateTasks";
 import Event from "./Event";
 
 function App() {
-  const { user, setUser, events, setEvents } = useGlobalState();
+  const { user, setUser, setEvents, setHostedEvents } = useGlobalState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +26,9 @@ function App() {
         }
       })
       .then((r) => {
+        
         setUser(r);
+        console.log(r.invitations.filter(invitation => invitation.event.host_id === user.id))
         setEvents(r.invitations)
         setLoading(false);
       })
@@ -35,7 +37,7 @@ function App() {
         setLoading(false)
       });
   }, []);
-
+  console.log(user)
   if (loading) {
     return <LoadingPage />;
   }
@@ -50,7 +52,7 @@ function App() {
         <Route path="/sign-up-log-in">
           <ParentForm />
         </Route>
-        <Route path="/events">
+        <Route path="/upcoming-events">
             <DisplayEvents />
         </Route>
         <Route path='/create-event'>
@@ -62,7 +64,7 @@ function App() {
         <Route path='/create-tasks/:event_id'>
           <CreateTasks />
         </Route>
-        <Route path='/event/:event_id'>
+        <Route path='/upcoming-event/:event_id'>
           <Event />
         </Route>
       </Switch>

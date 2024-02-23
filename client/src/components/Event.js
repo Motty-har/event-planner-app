@@ -10,7 +10,6 @@ function Event() {
   const { user } = useGlobalState()
   const [event, setEvent] = useState();
   const [tasks, setTasks] = useState();
-  const [invites, setInvites] = useState()
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,11 +18,6 @@ function Event() {
       .then((eventData) => {
         setEvent(eventData);
         setTasks(eventData.tasks);
-  
-        const sortedInvites = eventData.invitations.sort((a, b) =>
-          a.user.last_name.localeCompare(b.user.last_name)
-        );
-        setInvites(sortedInvites);
         setIsLoading(false);
       });
   }, [event_id]);

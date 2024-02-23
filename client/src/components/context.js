@@ -8,8 +8,9 @@ export const GlobalStateProvider = ({ children }) => {
   const [events, setEvents] = useState([])
   const [createEventId, setCreateEventId] = useState(null)
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [hostedEvents, setHostedEvents] = useState([])
 
-  const globalState = { user, setUser, logIn, setLogIn, events, setEvents, createEventId, setCreateEventId, selectedUsers, setSelectedUsers };
+  const globalState = { user, setUser, logIn, setLogIn, events, setEvents, createEventId, setCreateEventId, selectedUsers, setSelectedUsers, hostedEvents, setHostedEvents };
 
   return (
     <GlobalStateContext.Provider value={globalState}>

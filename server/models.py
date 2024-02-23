@@ -28,7 +28,7 @@ class Event(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    serialize_rules = ('-invitations.user', '-hosted_events.host')
+    serialize_rules = ('-invitations.user', '-invitations.event.tasks', '-invitations.event.host', '-invitations.event.invitations', '-hosted_events', '-tasks')
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -76,7 +76,7 @@ class Invitation(db.Model, SerializerMixin):
 class Task(db.Model, SerializerMixin):
     __tablename__ = 'tasks'
 
-    serialize_rules = ('-event.tasks', '-user.tasks')
+    serialize_rules = ('-event.tasks', 'event.invitations', 'event.host', '-user.hosted_events', '-user.tasks', '-user.invitations',)
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(255), nullable=False)

@@ -17,10 +17,10 @@ function Event() {
     fetch(`/get_event/${event_id}`)
       .then((resp) => resp.json())
       .then((eventData) => {
-        setEvent(eventData.event);
+        setEvent(eventData);
         setTasks(eventData.tasks);
   
-        const sortedInvites = eventData.event.invitations.sort((a, b) =>
+        const sortedInvites = eventData.invitations.sort((a, b) =>
           a.user.last_name.localeCompare(b.user.last_name)
         );
         setInvites(sortedInvites);

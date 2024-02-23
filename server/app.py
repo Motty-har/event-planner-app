@@ -98,10 +98,8 @@ class GetEvent(Resource):
         
         event = Event.query.filter_by(id=event_id).first()
         
-        tasks = Task.query.filter_by(event_id=event_id).all()
-        tasks_ser = [task.to_dict() for task in tasks]
-        
-        return {'event': event.to_dict(), 'tasks': tasks_ser}, 200
+       
+        return  event.to_dict(), 200
     
 class Invitations(Resource):
     def post(self):

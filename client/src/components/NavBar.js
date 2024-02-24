@@ -6,7 +6,6 @@ function Navbar() {
   const { user, setUser } = useGlobalState();
 
   const handleLogout = () => {
-    // Perform the logout action
     setUser(false);
   };
 

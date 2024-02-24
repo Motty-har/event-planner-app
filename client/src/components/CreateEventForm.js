@@ -2,8 +2,10 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
+import { useGlobalState } from './context';
 
 function CreateEventForm() {
+    const { user } = useGlobalState()
     const history = useHistory();
 
     const initialValues = {
@@ -23,7 +25,7 @@ function CreateEventForm() {
     });
 
     const onSubmit = (values) => {
-        fetch('/create-event', {
+        fetch(`/create-event/${user.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -10,9 +10,10 @@ import CreateEventForm from "./CreateEventForm";
 import Invitations from "./Invitations";
 import CreateTasks from "./CreateTasks";
 import Event from "./Event";
+import DisplayMyEvents from "./DisplayMyEvents";
 
 function App() {
-  const { user, setUser, setEvents, setHostedEvents } = useGlobalState();
+  const { user, setUser, setEvents, setHostedEvents, hostedEvents } = useGlobalState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,8 +29,10 @@ function App() {
       .then((r) => {
         
         setUser(r);
-        console.log(r.invitations.filter(invitation => invitation.event.host_id === user.id))
-        setEvents(r.invitations)
+        if (r && r.id) { 
+          setHostedEvents(r.invitations.filter(invitation => invitation.event.host_id === r.id))
+          setEvents(r.invitations.filter(invitation => invitation.event.host_id !== r.id))
+      }
         setLoading(false);
       })
       .catch((error) => {
@@ -37,7 +40,7 @@ function App() {
         setLoading(false)
       });
   }, []);
-  console.log(user)
+
   if (loading) {
     return <LoadingPage />;
   }
@@ -66,6 +69,9 @@ function App() {
         </Route>
         <Route path='/upcoming-event/:event_id'>
           <Event />
+        </Route>
+        <Route path='/my-events'>
+          <DisplayMyEvents />
         </Route>
       </Switch>
     </Router>

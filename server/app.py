@@ -64,7 +64,7 @@ class Logout(Resource):
         return False, 204
 
 class CreateEvent(Resource):
-    def post(self):
+    def post(self, user_id):
         user_id = session.get('user_id')
         if not user_id:
             return {'error': '401 Unauthorized'}, 401
@@ -76,11 +76,12 @@ class CreateEvent(Resource):
         date_str = event_data.get('date')
         time_str = event_data.get('time')
         location = event_data.get('location')
+        
 
         date = datetime.strptime(date_str, '%Y-%m-%d').date()
         time = datetime.strptime(time_str, '%H:%M').time()
 
-        event = Event(title=title, description=description, date=date, time=time, location=location)
+        event = Event(title=title, description=description, date=date, time=time, location=location, host_id = user_id)
         db.session.add(event)
         db.session.commit()
 
@@ -157,7 +158,7 @@ api.add_resource(Signup, '/signup')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
-api.add_resource(CreateEvent, '/create-event')
+api.add_resource(CreateEvent, '/create-event/<int:user_id>')
 api.add_resource(Users, '/users')
 api.add_resource(GetEvent, '/get_event/<int:event_id>')
 api.add_resource(Invitations, '/invitations')

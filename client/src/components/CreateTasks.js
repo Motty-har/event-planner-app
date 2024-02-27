@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useGlobalState } from "./context";
 import TaskCard from "./TaskCard";
 
@@ -9,6 +9,7 @@ function CreateTasks() {
   const { selectedUsers } = useGlobalState();
   const { event_id } = useParams();
   const [tasks, setTasks] = useState([]);
+  const history = useHistory()
 
   const formSchema = yup.object({
     description: yup.string().required("Description is required").max(250),
@@ -32,6 +33,7 @@ function CreateTasks() {
       .then(data => {
         console.log('Submit Tasks response:', data);
         setTasks([]);
+        history.push('/')
       })
       .catch(error => {
         console.error('Error submitting tasks:', error);

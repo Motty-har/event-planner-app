@@ -31,8 +31,6 @@ class Signup(Resource):
         username = request_json.get('username')
         password = request_json.get('password')
         email = request_json.get('email')
-       
-        name = f"{first_name} {last_name}"
 
         user = User(first_name=first_name, last_name=last_name, username=username, email=email)
         user.password_hash = password
@@ -93,7 +91,18 @@ class Users(Resource):
         users = User.query.order_by(User.last_name).all()
 
         return [user.to_dict() for user in users], 200
+    
+class HostedEvents(Resource):
+    def get(self):
+        id = session.get('user_id')
+        user = User.query.filter_by(id=id).first()
 
+        if user:
+            hosted_events = user.hosted_events  
+            return [event.to_dict() for event in hosted_events], 200
+        else:
+            return {"message": "User not found"}, 404
+    
 class GetEvent(Resource):
     def get(self, event_id):
         
@@ -164,6 +173,6 @@ api.add_resource(GetEvent, '/get_event/<int:event_id>')
 api.add_resource(Invitations, '/invitations')
 api.add_resource(CreateTasks, '/create_tasks/<int:event_id>')
 api.add_resource(TaskStatus, '/task_status/<int:task_id>')
-
+api.add_resource(HostedEvents, '/hosted_events')
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

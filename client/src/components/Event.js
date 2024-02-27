@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
 import TaskCard from "./TaskCard";
+import { useGlobalState } from "./context";
 
 
 function Event() {
@@ -10,7 +11,7 @@ function Event() {
   const [tasks, setTasks] = useState();
   const [invites, setInvites] = useState()
   const [isLoading, setIsLoading] = useState(true);
-  console.log(event)
+  const { user } = useGlobalState()
   useEffect(() => {
     fetch(`/get_event/${event_id}`)
       .then((resp) => resp.json())
@@ -20,7 +21,7 @@ function Event() {
         setIsLoading(false);
       });
   }, [event_id]);
-
+  console.log(event)
   return (
     <div>
     <div className="centered-container">
@@ -65,7 +66,7 @@ function Event() {
   );
 })}
     </div><hr></hr>
-    {tasks && tasks.map(task => {
+    {tasks && user.id === event.host_id && tasks.map(task => {
        return (
         <div className="invite-card">
           <p><strong>Description:</strong> {task.description}</p><hr></hr><br></br>

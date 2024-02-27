@@ -15,6 +15,7 @@ const Invitations = () => {
       .then(response => response.json())
       .then(data => {
         setUsers(data);
+        setSelectedUsers([user])
         setLoading(false);
       })
       .catch(error => {
@@ -36,9 +37,9 @@ const Invitations = () => {
       }
     });
   };
-
+  console.log(selectedUsers)
   const handleSubmit = () => {
-    
+
     const selectedUsersIds = selectedUsers.map(user => user.id);
     const data = {
       user_id: user.id,

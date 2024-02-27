@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useGlobalState } from './context';
 
 function CreateEventForm() {
-    const { user } = useGlobalState()
+    const { user, hostedEvents, setHostedEvents } = useGlobalState()
     const history = useHistory();
 
     const initialValues = {
@@ -39,6 +39,7 @@ function CreateEventForm() {
                 return response.json();
             })
             .then(event => {
+                setHostedEvents([...hostedEvents, event])
                 history.push(`/invitations/${event.id}`);
             })
             .catch(error => {

@@ -27,10 +27,10 @@ function App() {
         }
       })
       .then((r) => {
-        
+        console.log(r)
         setUser(r);
         if (r && r.id) { 
-          setHostedEvents(r.invitations.filter(invitation => invitation.event.host_id === r.id))
+          
           setEvents(r.invitations.filter(invitation => invitation.event.host_id !== r.id))
       }
         setLoading(false);
